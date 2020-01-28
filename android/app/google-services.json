@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1070414537566",
+    "firebase_url": "https://eschlen-guide.firebaseio.com",
+    "project_id": "eschlen-guide",
+    "storage_bucket": "eschlen-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070414537566:android:56fffcb5c64dd7adcde5cf",
+        "android_client_info": {
+          "package_name": "com.haeseoklee.eschlen_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070414537566-s9enk3ft4tnnmbujnr6a9vtmckpsafe1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjKngdTOKxBE4oXp9AhsoDJK59TXY3LpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070414537566-s9enk3ft4tnnmbujnr6a9vtmckpsafe1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1070414537566-mfvnlgfnri0m58gpo1ddob8mvflcbtmb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.haeseoklee.eschlenGuide"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

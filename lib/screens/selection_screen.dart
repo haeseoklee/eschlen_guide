@@ -21,7 +21,7 @@ class _SelectionPageState extends State<SelectionPage> {
 
 
   int checkedNum = 0;
-  bool isGpsAble = true;
+  bool isGpsAble = false;
   List _isChecked = [
     [false, false],
     [false, false],
@@ -270,7 +270,7 @@ class _SelectionPageState extends State<SelectionPage> {
                       AppSettings.openLocationSettings();
                       Platform.isAndroid ?
                       _showDialog("알림", "GPS를 연결해주세요", () => Navigator.pop(context)) :
-                      _showCupertinoDialog('GPS 연결실패', 'GSP를 켜주세요', () => Navigator.pop(context));
+                      _showCupertinoDialog('알림', 'GPS를 연결해주세요', () => Navigator.pop(context));
                     }else{
                       Navigator.push(context, MaterialPageRoute(builder: (context){
                         return LoadingScreen(
