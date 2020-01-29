@@ -22,6 +22,7 @@ class Location {
       return (location);
     } catch (e) {
       print(e);
+      return (location);
     }
   }
 }

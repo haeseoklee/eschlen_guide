@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class LoadingScreen extends StatefulWidget {
 
   static const id = 'loading_screen';
-  Map options;
+  final Map options;
 
   LoadingScreen({this.options});
 
@@ -51,7 +51,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
               ),
             ),
             SpinKitDoubleBounce(
-              color: Colors.yellow[700],
+              color: Colors.amberAccent,
               size: 120.0,
             ),
           ],

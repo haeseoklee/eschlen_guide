@@ -4,7 +4,7 @@ import 'networking.dart';
 
 class Recommendation {
   final Map options;
-  final key = 'KakaoAK kkkkkkkkkkkkkkkkkkkkkkkkkk';
+  final key = 'KakaoAK ';
   List keywords = [];
   List resKeywords = [
     '중식',
@@ -38,7 +38,7 @@ class Recommendation {
   int size;
   List<Map> restaurantData = [];
   Map filteredRestaurantData;
-  Set restaurantName = {};
+  Set restaurantName = Set();
 
   Recommendation(this.options);
 
@@ -83,7 +83,7 @@ class Recommendation {
       query = keyword;
       do {
         NetworkHelper networkHelper = NetworkHelper(
-            url: "https://dapi.kakao.com/v2/local/search/keyword.json?query=${query}&y=${y}&x=${x}&radius=${radius}&page=${page}",
+            url: "https://dapi.kakao.com/v2/local/search/keyword.json?query=$query&y=$y&x=$x&radius=$radius&page=$page",
             key: key);
         var mapData = await networkHelper.getData();
         if (mapData == {}) {

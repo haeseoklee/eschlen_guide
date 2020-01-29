@@ -2,8 +2,8 @@ import 'package:eschlen_guide/screens/loading_screen.dart';
 import 'package:eschlen_guide/screens/result_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'screens/selection_screen.dart';
-import 'screens/star_screen.dart';
+import 'screens/option_screen.dart';
+import 'screens/bookmark_screen.dart';
 import 'screens/user_screen.dart';
 
 void main() => runApp(MyApp());

@@ -5,7 +5,7 @@ import 'package:spring_button/spring_button.dart';
 import 'loading_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../option_card.dart';
+import '../components/option_card.dart';
 import 'dart:io' show Platform;
 
 class SelectionPage extends StatefulWidget {
@@ -112,7 +112,7 @@ class _SelectionPageState extends State<SelectionPage> {
   }
 
 
-  Future<bool> checkGps() async{
+  void checkGps() async{
     Geolocator geolocator = Geolocator();
     bool geolocationStatus  = await geolocator.isLocationServiceEnabled();
     setState(() {
@@ -185,7 +185,7 @@ class _SelectionPageState extends State<SelectionPage> {
                           : Colors.grey[200],
                       childContent: Padding(
                         padding: const EdgeInsets.all(33.0),
-                        child: Image.asset('images/yin-yang.png',
+                        child: Image.asset('images/china.png',
                             color: _isChecked[1][0] ? null : Colors.grey[300]),
                       ),
                     ),
@@ -202,7 +202,7 @@ class _SelectionPageState extends State<SelectionPage> {
                           : Colors.grey[200],
                       childContent: Padding(
                         padding: const EdgeInsets.all(33.0),
-                        child: Image.asset('images/flower.png',
+                        child: Image.asset('images/sushi.png',
                             color: _isChecked[1][1] ? null : Colors.grey[300]),
                       ),
                     ),
