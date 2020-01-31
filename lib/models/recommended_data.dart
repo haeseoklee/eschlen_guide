@@ -1,12 +1,15 @@
+import 'package:eschlen_guide/networking.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:eschlen_guide/location.dart';
 import 'dart:math';
-import 'networking.dart';
 
-class Recommendation {
-  final Map options;
-  final key = 'KakaoAK ';
-  List keywords = [];
-  List resKeywords = [
+class RecommendedData extends ChangeNotifier{
+
+  var recommenedData = null;
+
+  final _key = 'KakaoAK ';
+  final List _resKeywords = [
     '중식',
     '양식',
     '일식',
@@ -30,20 +33,19 @@ class Recommendation {
     '간식',
     '도시락'
   ];
-  String query = '음식점';
-  double x;
-  double y;
-  int radius;
-  int page = 1;
-  int size;
-  List<Map> restaurantData = [];
-  Map filteredRestaurantData;
-  Set restaurantName = Set();
 
-  Recommendation(this.options);
 
-  Future<dynamic> getRestaurants() async {
+
+  Future<bool> getRestaurants(options) async {
+    Map filteredRestaurantData;
     bool isEnd = false;
+    double x, y;
+    int page, radius;
+    List keywords = [];
+    String query = '음식점';
+    List<Map> restaurantData = [];
+    Set restaurantName = Set();
+
     try{
       Map location = await Location().getCurrentLocation();
       x = location['longitude'];
@@ -75,16 +77,17 @@ class Recommendation {
 
     if (!keywords.contains('술집') && !keywords.contains('커피전문점') &&
         !keywords.contains('중식') && !keywords.contains('일식')){
-      for(String res in resKeywords){
+      for(String res in _resKeywords){
         keywords.add(res);
       }
     }
     for (String keyword in keywords) {
       query = keyword;
+      page = 1;
       do {
         NetworkHelper networkHelper = NetworkHelper(
             url: "https://dapi.kakao.com/v2/local/search/keyword.json?query=$query&y=$y&x=$x&radius=$radius&page=$page",
-            key: key);
+            key: _key);
         var mapData = await networkHelper.getData();
         if (mapData == {}) {
           break;
@@ -104,10 +107,12 @@ class Recommendation {
       filteredRestaurantData = {};
     } else {
       restaurantData.shuffle();
-      filteredRestaurantData =
-          restaurantData[Random().nextInt(restaurantData.length)];
+      filteredRestaurantData = restaurantData[Random().nextInt(restaurantData.length)];
     }
 
-    return filteredRestaurantData;
+    recommenedData = filteredRestaurantData;
+
+    return filteredRestaurantData != {} ? true : false;
   }
+
 }

@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eschlen_guide/auth.dart';
+import 'package:eschlen_guide/models/recommended_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:provider/provider.dart';
 
 final _firestore = Firestore.instance;
 FirebaseUser loggedInUser;
@@ -19,10 +19,11 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
-  Map arguments;
   Completer<WebViewController> _controller = Completer<WebViewController>();
   AuthManager authManager = AuthManager();
   bool isBookmark = false;
+  var resData = Map();
+
 
   void getUser() async {
     FirebaseUser user = await authManager.getCurrentUser();
@@ -39,16 +40,17 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    arguments = ModalRoute.of(context).settings.arguments;
     checkBookmark();
+    resData = Provider.of<RecommendedData>(context).recommenedData;
   }
+
 
   void checkBookmark() async{
     QuerySnapshot bookmarks = await _firestore
         .collection('users')
         .document(loggedInUserId)
         .collection('bookmarks')
-        .where('restaurant_name', isEqualTo: arguments['recommendedRes']['place_name'])
+        .where('restaurant_name', isEqualTo: resData['place_name'])
         .getDocuments();
     if (bookmarks.documents.length == 0){
       setState(() {
@@ -68,11 +70,11 @@ class _ResultPageState extends State<ResultPage> {
           .collection('users')
           .document(loggedInUserId)
           .collection('bookmarks')
-          .document(arguments['recommendedRes']['place_name'])
+          .document(resData['place_name'])
           .setData({
-            'restaurant_name': arguments['recommendedRes']['place_name'],
-            'restaurant_url': arguments['recommendedRes']['place_url'],
-            'distance': arguments['recommendedRes']['distance'],
+            'restaurant_name': resData['place_name'],
+            'restaurant_url': resData['place_url'],
+            'distance': resData['distance'],
             'user_id': loggedInUser.uid,
           });
       setState(() {
@@ -85,7 +87,7 @@ class _ResultPageState extends State<ResultPage> {
           .collection('users')
           .document(loggedInUserId)
           .collection('bookmarks')
-          .document(arguments['recommendedRes']['place_name'])
+          .document(resData['place_name'])
           .delete();
 
       setState(() {
@@ -100,9 +102,9 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: arguments['recommendedRes'] != {}
+          child: resData != {}
               ? WebView(
-                  initialUrl: arguments['recommendedRes']['place_url'],
+                  initialUrl: resData['place_url'],
                   javascriptMode: JavascriptMode.unrestricted,
                   onWebViewCreated: (WebViewController controller) {
                     _controller.complete(controller);

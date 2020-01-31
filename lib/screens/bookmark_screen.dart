@@ -3,6 +3,7 @@ import 'package:eschlen_guide/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 final _firestore = Firestore.instance;
@@ -21,7 +22,7 @@ class _StarPageState extends State<StarPage> {
   AuthManager authManager = AuthManager();
   bool showSpinner = false;
 
-  void getUser() async {
+  Future<void> getUser() async {
     setState(() {
       showSpinner = true;
     });
@@ -57,6 +58,10 @@ class _StarPageState extends State<StarPage> {
       body: SafeArea(
           child: ModalProgressHUD(
           inAsyncCall: showSpinner,
+            progressIndicator: SpinKitCircle(
+              color: Colors.amberAccent,
+              size: 120.0,
+            ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -81,9 +86,10 @@ class BookmarkStream extends StatelessWidget {
         builder: (context, snapshot) {
           if (!snapshot.hasData){
             return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.yellowAccent,
-              )
+              child: SpinKitCircle(
+                color: Colors.amberAccent,
+                size: 120.0,
+              ),
             );
           }
           final bookmarks = snapshot.data.documents;

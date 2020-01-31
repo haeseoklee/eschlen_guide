@@ -1,37 +1,26 @@
-import 'package:eschlen_guide/recommendation.dart';
-import 'package:eschlen_guide/screens/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingScreen extends StatefulWidget {
 
   static const id = 'loading_screen';
-  final Map options;
+  final Function doSomething;
 
-  LoadingScreen({this.options});
+  LoadingScreen({this.doSomething});
 
   @override
-  _LoadingScreenState createState() => _LoadingScreenState(options: options);
+  _LoadingScreenState createState() => _LoadingScreenState(doSomething: doSomething);
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
 
-  Map options;
-  _LoadingScreenState({this.options});
+  final Function doSomething;
+  _LoadingScreenState({this.doSomething});
 
   @override
   void initState() {
     super.initState();
-    getRecommendedRestaurant();
-  }
-
-  void getRecommendedRestaurant() async{
-
-    Map recommendedRes = await Recommendation(options).getRestaurants();
-
-    Navigator.pushReplacementNamed(context, ResultPage.id, arguments: {
-      'recommendedRes': recommendedRes
-    });
+    doSomething();
   }
 
 
