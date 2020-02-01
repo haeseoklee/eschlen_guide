@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:eschlen_guide/location.dart';
 import 'dart:math';
 
-class RecommendedData extends ChangeNotifier{
+class RecommendedData extends ChangeNotifier {
 
-  var recommenedData = null;
+  Map recommenedData = Map();
 
   final _key = 'KakaoAK ';
   final List _resKeywords = [
@@ -34,8 +34,6 @@ class RecommendedData extends ChangeNotifier{
     '도시락'
   ];
 
-
-
   Future<bool> getRestaurants(options) async {
     Map filteredRestaurantData;
     bool isEnd = false;
@@ -46,11 +44,11 @@ class RecommendedData extends ChangeNotifier{
     List<Map> restaurantData = [];
     Set restaurantName = Set();
 
-    try{
+    try {
       Map location = await Location().getCurrentLocation();
       x = location['longitude'];
       y = location['latitude'];
-    }catch(e){
+    } catch (e) {
       x = 126.837846;
       y = 37.300436;
     }
@@ -75,9 +73,11 @@ class RecommendedData extends ChangeNotifier{
       }
     }
 
-    if (!keywords.contains('술집') && !keywords.contains('커피전문점') &&
-        !keywords.contains('중식') && !keywords.contains('일식')){
-      for(String res in _resKeywords){
+    if (!keywords.contains('술집') &&
+        !keywords.contains('커피전문점') &&
+        !keywords.contains('중식') &&
+        !keywords.contains('일식')) {
+      for (String res in _resKeywords) {
         keywords.add(res);
       }
     }
@@ -86,14 +86,15 @@ class RecommendedData extends ChangeNotifier{
       page = 1;
       do {
         NetworkHelper networkHelper = NetworkHelper(
-            url: "https://dapi.kakao.com/v2/local/search/keyword.json?query=$query&y=$y&x=$x&radius=$radius&page=$page",
+            url:
+                "https://dapi.kakao.com/v2/local/search/keyword.json?query=$query&y=$y&x=$x&radius=$radius&page=$page",
             key: _key);
         var mapData = await networkHelper.getData();
         if (mapData == {}) {
           break;
         }
         for (var data in mapData['documents']) {
-          if (!restaurantName.contains(data['place_name'])){
+          if (!restaurantName.contains(data['place_name'])) {
             restaurantName.add(data['place_name']);
             restaurantData.add(data);
           }
@@ -104,15 +105,17 @@ class RecommendedData extends ChangeNotifier{
     }
 
     if (restaurantData.length == 0) {
-      filteredRestaurantData = {};
+      filteredRestaurantData = {
+        'url': ''
+      };
     } else {
       restaurantData.shuffle();
-      filteredRestaurantData = restaurantData[Random().nextInt(restaurantData.length)];
+      filteredRestaurantData =
+          restaurantData[Random().nextInt(restaurantData.length)];
     }
 
     recommenedData = filteredRestaurantData;
 
     return filteredRestaurantData != {} ? true : false;
   }
-
 }

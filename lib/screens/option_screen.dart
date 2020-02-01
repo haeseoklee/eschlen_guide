@@ -1,6 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:eschlen_guide/models/option_data.dart';
-import 'package:eschlen_guide/models/recommended_data.dart';
+import 'package:eschlen_guide/models/recommend_data.dart';
 import 'package:eschlen_guide/screens/result_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
