@@ -98,22 +98,7 @@ class BookmarkStream extends StatelessWidget {
             );
           }
           final bookmarks = snapshot.data.documents;
-          List<Widget> cards = [];
-          for (DocumentSnapshot bookmark in bookmarks) {
-            cards.add(
-                GestureDetector(
-                  onTap: () => {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => MyWebView(url: bookmark['restaurant_url'],)))
-                  },
-                  child: MyCard(
-                    getImage: getImage,
-                    data: bookmark,
-                  )
-                )
-            );
-          }
-          if (cards.length == 0){
+          if (bookmarks.length == 0){
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
@@ -124,11 +109,18 @@ class BookmarkStream extends StatelessWidget {
               ),
             );
           }else{
-            return GridView.count(
-                crossAxisCount: 2,
+            return GridView.builder(
+                itemCount: bookmarks.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 9.0 / 10.0,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 7,
+                  mainAxisSpacing: 7,
+                ),
                 padding: EdgeInsets.all(18.0),
-                childAspectRatio: 9.0 / 10.0,
-                children: cards
+                itemBuilder: (BuildContext context, int index){
+                  return MyCard(getImage: getImage, data: bookmarks[index]);
+                },
             );
           }
 
@@ -145,62 +137,68 @@ class MyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          AspectRatio(
-              aspectRatio: 2.0 / 1.0,
-              child: FutureBuilder(
-                future: getImage(data['restaurant_url']),
-                builder: (BuildContext context, AsyncSnapshot<Image> image){
-                  if (!image.hasData) {
-                    return Center(
-                      child: SpinKitRing(
-                        color: Colors.amberAccent,
-                        size: 50.0,
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => MyWebView(url: data['restaurant_url'],)));
+      },
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AspectRatio(
+                aspectRatio: 2.0 / 1.0,
+                child: FutureBuilder(
+                  future: getImage(data['restaurant_url']),
+                  builder: (BuildContext context, AsyncSnapshot<Image> image){
+                    if (!image.hasData) {
+                      return Center(
+                        child: SpinKitRing(
+                          color: Colors.amberAccent,
+                          size: 50.0,
+                        ),
+                      );// image is ready
+                    }
+                    return image.data;  // placeholder
+                  },
+                )
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        data['restaurant_name'],
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                    );// image is ready
-                  }
-                  return image.data;  // placeholder
-                },
-              )
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                      data['restaurant_name'],
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                      maxLines: 1,
                     ),
-                    maxLines: 1,
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                      data['phone'] != "" ? data['phone'] : "전화번호 없음",
-                    style: TextStyle(
-                      color: Colors.grey[700]
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                      data['road_address_name'],
-                    style: TextStyle(
-                        fontSize: 12.0,
+                    SizedBox(height: 8.0),
+                    Text(
+                        data['phone'] != "" ? data['phone'] : "전화번호 없음",
+                      style: TextStyle(
                         color: Colors.grey[700]
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 8.0),
+                    Text(
+                        data['road_address_name'],
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.grey[700]
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
